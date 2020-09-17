@@ -5,7 +5,6 @@ const voiceStateUpdateProcessor = require('./events/voiceStateUpdate.js');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
-var voiceChannel ;
 var vConnection;
 
 client.on('ready', () => {
