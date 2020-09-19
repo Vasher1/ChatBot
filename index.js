@@ -2,6 +2,7 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const { prefix, token, movieAPIKey } = require('./config.json');
 const voiceStateUpdateProcessor = require('./events/voiceStateUpdate.js');
+const { join } = require('path');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
@@ -26,7 +27,7 @@ client.on('message', async message => {
 	const command = args.shift().toLowerCase();
 
 	if (!client.commands.has(command)){
-    message.reply("I don't know how to do that :(");
+    functionNotValid(message);
   }else{
     try {
       client.commands.get(command).execute(message, args);
@@ -44,3 +45,25 @@ client.on('voiceStateUpdate', (oldMember, newMember) => voiceStateUpdateProcesso
 
 
 client.login(token);
+
+
+function functionNotValid(message){
+  if (message.member.voice.channel) {
+    message.member.voice.channel.join().then(function(connection){
+      const dispatcher = connection.play("C:/Users/AdamM/Dropbox/SkyNet/Random/JezSays-ThisFunctionisNotAvailable.wav");
+
+      speaking = true;
+
+      dispatcher.on('finish', () => {
+        speaking = false;
+        connection.disconnect();
+      });
+
+    }).catch(function(err){
+      console.log(err)
+    });
+  }
+  else{
+    message.reply("I don't know how to do that :(");
+  }
+}
