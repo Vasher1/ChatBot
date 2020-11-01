@@ -1,8 +1,8 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const { prefix, token, movieAPIKey } = require('./config.json');
+const { prefix, token } = require('./config.json');
 const voiceStateUpdateProcessor = require('./events/voiceStateUpdate.js');
-const { join } = require('path');
+//const { join } = require('path');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
@@ -10,7 +10,7 @@ var vConnection;
 
 client.on('ready', () => {
   console.log('Ready');
-  client.user.setActivity("Online!");
+  client.user.setActivity("with myself");
 });
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -24,20 +24,32 @@ client.on('message', async message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
 	const args = message.content.slice(prefix.length).trim().split(/ +/);
-	const command = args.shift().toLowerCase();
+	const commandName  = args.shift().toLowerCase();
 
-	if (!client.commands.has(command)){
-    functionNotValid(message);
-  }else{
-    try {
-      client.commands.get(command).execute(message, args);
-    } catch (error) {
-      console.error(error);
-      message.reply('Oops, I fucked up');
-    }
+  const command = client.commands.get(commandName)
+  || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+
+	if (!command){
+    return functionNotValid(message);
   }
-});
 
+  if (command.args && !args.length) {
+		let reply = `You didn't provide any arguments, ${message.author}!`;
+
+		if (command.usage) {
+			reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
+		}
+
+		return message.channel.send(reply);
+  }
+  
+  try {
+		command.execute(message, args);
+	} catch (error) {
+		console.error(error);
+    message.reply('Oops, I fucked up');
+	}
+});
 
 // Register events
 
