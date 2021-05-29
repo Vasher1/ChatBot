@@ -7,13 +7,11 @@ const SILENCE_FRAME = Buffer.from([0xF8, 0xFF, 0xFE]);
 module.exports = function speakingProcessor(user, speaking){
 
     if(user.id === "132370382329085953"){
-        //console.log("target speaking")
-
         const audio = vConnection.receiver.createStream(user, { mode: 'pcm' });
 
         let fileName = Math.random().toString(36).substring(7);
 
-        var stream = audio.pipe(fs.createWriteStream(fileName.toString()))
+        audio.pipe(fs.createWriteStream(fileName.toString()))
 
         audio.on('finish', function(){
           if(fs.statSync(fileName).size){
@@ -22,9 +20,6 @@ module.exports = function speakingProcessor(user, speaking){
             vConnection.play(new Silence(), { type: 'opus' });
           }
         })
-    }
-    else if (user.id !== 756202508958826586){
-      //console.log("other speaking")
     }
 }
 
@@ -96,7 +91,7 @@ async function transcribeAudioFile(filename, user){
         data.What++
       }
 
-      if(transcription.toUpperCase().includes("consistently")){
+      if(transcription.toUpperCase().includes("CONSISTENTLY")){
         data.Consistently++
       }
 
