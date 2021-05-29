@@ -18,6 +18,8 @@ module.exports = function speakingProcessor(user, speaking){
             transcribeAudioFile(fileName, user)
 
             vConnection.play(new Silence(), { type: 'opus' });
+          } else{
+            fs.unlinkSync(filename)
           }
         })
     }
