@@ -1,3 +1,5 @@
+const { Readable } = require('stream');
+const SILENCE_FRAME = Buffer.from([0xF8, 0xFF, 0xFE]);
 var speaking = false;
 
 module.exports = async function voiceStateUpdateProcessor(oldState, newState){
@@ -7,6 +9,9 @@ module.exports = async function voiceStateUpdateProcessor(oldState, newState){
 
       if(newState.id !== "756202508958826586"){
         newState.member.voice.channel.join().then(function(connection){
+          
+          connection.play(new Silence(), { type: 'opus' });
+
           const dispatcher = connection.play(GetGreeting(newState.id));
   
           speaking = true;
@@ -50,3 +55,11 @@ function GetGreeting(id){
 
     case '393482616147279872': // sky
 */
+
+
+class Silence extends Readable {
+  _read() {
+    this.push(SILENCE_FRAME);
+    this.destroy();
+  }
+}
