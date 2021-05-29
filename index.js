@@ -65,7 +65,7 @@ client.login(token);
 // Error function
 
 function functionNotValid(message){
-  if (message.member.voice.channel) {
+  if (message.member && message.member.voice.channel) {
     message.member.voice.channel.join().then(function(connection){
       const dispatcher = connection.play("C:/Users/AdamM/Dropbox/SkyNet/Random/JezSays-ThisFunctionisNotAvailable.wav");
 

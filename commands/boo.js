@@ -2,8 +2,7 @@ module.exports = {
     name: 'boo',
     description: 'Plays boo',
     async execute(message) {
-        if (message.member.voice.channel) {
-
+        if (message.member && message.member.voice.channel) {
             message.member.voice.channel.join().then(function (connection) {
                 const dispatcher = connection.play('C:/Users/AdamM/Dropbox/SkyNet/Random/JezGoesBOOO.wav');
 
@@ -17,6 +16,8 @@ module.exports = {
             }).catch(function (err) {
                 console.log(err)
             });
+        } else {
+            message.reply("Boo!");
         }
     },
 };

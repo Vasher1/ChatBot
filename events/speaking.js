@@ -5,7 +5,7 @@ const { Readable } = require('stream');
 const SILENCE_FRAME = Buffer.from([0xF8, 0xFF, 0xFE]);
 
 module.exports = function speakingProcessor(user, speaking){
-    if(speaking && user.id === "132370382329085953"){
+    if(speaking && user.id === "346738058806296577"){
         const audio = vConnection.receiver.createStream(user, { mode: 'pcm' });
 
         let fileName = Math.random().toString(36).substring(7);
@@ -42,7 +42,7 @@ async function transcribeAudioFile(filename, user){
     config: {
       encoding: 'LINEAR16',
       sampleRateHertz: 44100,
-      languageCode: 'en-GB',
+      languageCode: 'en-CA',
       audioChannelCount: 2,
       speechContext: ['boring', 'nothing', 'fuck', 'cunt', 'angon', 'what', 'consistently']
     },
