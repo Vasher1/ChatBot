@@ -17,7 +17,11 @@ for (const file of commandFiles) {
 	client.commands.set(command.name, command);
 }
 
+console.log("Successfully loaded command files")
+
 // Register events
+
+console.log("Registering events")
 
 client.on('message', async message => {
   console.log("Processing message")
@@ -53,6 +57,8 @@ client.on('message', async message => {
 });
 
 client.on('voiceStateUpdate', (oldMember, newMember) => voiceStateUpdateProcessor(oldMember, newMember));
+
+console.log("Successfully registered events")
 
 client.login(token);
 

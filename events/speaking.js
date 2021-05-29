@@ -5,8 +5,7 @@ const { Readable } = require('stream');
 const SILENCE_FRAME = Buffer.from([0xF8, 0xFF, 0xFE]);
 
 module.exports = function speakingProcessor(user, speaking){
-
-    if(user.id === "132370382329085953"){
+    if(speaking && user.id === "132370382329085953"){
         const audio = vConnection.receiver.createStream(user, { mode: 'pcm' });
 
         let fileName = Math.random().toString(36).substring(7);
@@ -19,7 +18,7 @@ module.exports = function speakingProcessor(user, speaking){
 
             vConnection.play(new Silence(), { type: 'opus' });
           } else{
-            fs.unlinkSync(filename)
+            fs.unlinkSync(fileName)
           }
         })
     }
