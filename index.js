@@ -2,23 +2,20 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
 const voiceStateUpdateProcessor = require('./events/voiceStateUpdate.js');
-//const { join } = require('path');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
 var vConnection;
 
-client.on('ready', () => {
-  console.log('Ready');
-  client.user.setActivity("with myself");
-});
-
+// Load command files
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.name, command);
 }
+
+// Register events
 
 client.on('message', async message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -51,13 +48,11 @@ client.on('message', async message => {
 	}
 });
 
-// Register events
-
 client.on('voiceStateUpdate', (oldMember, newMember) => voiceStateUpdateProcessor(oldMember, newMember));
-
 
 client.login(token);
 
+// Error function
 
 function functionNotValid(message){
   if (message.member.voice.channel) {

@@ -3,6 +3,9 @@ module.exports = {
 	description: 'Leaves the voice channel',
 	async execute() {
 		if (vConnection) {
+
+			console.log("leaving voice chat")
+
             vConnection.disconnect();
         }
 	},

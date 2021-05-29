@@ -1,22 +1,26 @@
 var speaking = false;
 
-module.exports = function voiceStateUpdateProcessor(oldState, newState){
+module.exports = async function voiceStateUpdateProcessor(oldState, newState){
   if(speaking) return;
 
   if(!oldState.channelID){       // someone joined voice chat      
-      newState.member.voice.channel.join().then(function(connection){
-        const dispatcher = connection.play(GetGreeting(newState.id));
 
-        speaking = true;
-
-        dispatcher.on('finish', () => {
-          speaking = false;
-          connection.disconnect();
+      if(newState.id !== "756202508958826586"){
+        newState.member.voice.channel.join().then(function(connection){
+          const dispatcher = connection.play(GetGreeting(newState.id));
+  
+          speaking = true;
+  
+          dispatcher.on('finish', () => {
+            speaking = false;
+            connection.disconnect();
+          });
+  
+        }).catch(function(err){
+          console.log(err)
         });
+      }
 
-      }).catch(function(err){
-        console.log(err)
-      });
   } else if (newState.channelID && newState.channelID != oldState.channelID){ // someone moved channels
   
   }

@@ -2,7 +2,7 @@ const emojiCharacters = require('../emojiCharacters.js');
 
 module.exports = {
 	name: 'vote',
-    description: 'Starts a vote with the options given',
+    description: 'Starts a vote with the options given, optional time in seconds as the last param',
     args: true,
 	async execute(message, args) {
         var reactions = [];
